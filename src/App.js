@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import * as api from './services/api';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Search from './pages/Search';
 
