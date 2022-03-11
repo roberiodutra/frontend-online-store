@@ -2,6 +2,7 @@ import React from 'react';
 import * as api from '../services/api';
 import Category from '../components/Category';
 import SearchBar from '../components/SearchBar';
+import Details from './Details';
 
 class Home extends React.Component {
   constructor(props) {
@@ -57,6 +58,15 @@ class Home extends React.Component {
               category={ name }
             />)) }
         </section>
+        {/* <section>
+          {arrProdutos[0] !== ''
+          && (arrProdutos.map((product) => (
+            <Details
+              key={ product.id }
+              arrProdutos={ product }
+            />
+          )))}
+        </section> */}
       </div>
     );
   }
