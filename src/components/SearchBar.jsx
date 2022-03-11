@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import * as api from '../services/api';
-import ProdutosCard from '../components/ProdutosCard';
+import ProdutosCard from './ProdutosCard';
 
 class SearchBar extends Component {
   constructor(props) {
