@@ -1,6 +1,7 @@
 import React from 'react';
 import { getCategories } from '../services/api';
 import Category from '../component/Category';
+import SearchBar from './SearchBar';
 
 class Home extends React.Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class Home extends React.Component {
               category={ name }
             />)) }
         </section>
+        <SearchBar />
       </div>
     );
   }
