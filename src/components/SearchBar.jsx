@@ -25,7 +25,11 @@ class SearchBar extends Component {
         </button>
         <div>
           {arrProdutos.map((item) => (
-            <ProdutosCard item={ item.id } key={ item.id } />
+            <ProdutosCard
+              item={ item.id }
+              key={ item.id }
+              produto={ item }
+            />
           ))}
         </div>
       </div>
