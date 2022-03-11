@@ -1,7 +1,7 @@
 import React from 'react';
 import { getCategories } from '../services/api';
-import Category from '../component/Category';
-import SearchBar from './SearchBar';
+import Category from '../components/Category';
+import SearchBar from '../components/SearchBar';
 
 class Home extends React.Component {
   constructor(props) {
@@ -18,8 +18,6 @@ class Home extends React.Component {
   categories = async () => {
     await getCategories()
       .then((cat) => this.setState({ categories: cat }));
-    /* this.setState({ categories: name }); */
-    /* return name; */
   }
 
   render() {
@@ -30,6 +28,7 @@ class Home extends React.Component {
         <p data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
+        <SearchBar />
         <section>
           { categories.map(({ id, name }) => (
             <Category
@@ -37,7 +36,6 @@ class Home extends React.Component {
               category={ name }
             />)) }
         </section>
-        <SearchBar />
       </div>
     );
   }
