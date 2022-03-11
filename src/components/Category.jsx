@@ -2,6 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class Category extends React.Component {
+  handleChange = ({ target }) => {
+    if (target.checked) {
+      target.checked = false;
+      console.log('coisa');
+    } else {
+      console.log('true');
+    }
+  }
+
   render() {
     const { category } = this.props;
     return (
@@ -11,6 +20,7 @@ class Category extends React.Component {
           type="radio"
           id="category"
           data-testid="category"
+          onChange={ this.handleChange }
         />
       </label>
     );
