@@ -27,11 +27,18 @@ class Home extends React.Component {
       categories, searchValue,
     );
     this.setState({ arrProdutos: arrProdutos.results });
+    console.log(arrProdutos);
   }
 
   categories = async () => {
     await api.getCategories()
       .then((cat) => this.setState({ categories: cat }));
+  }
+
+  handleChange = async ({ target }) => {
+    const { results } = await api.getProductsFromCategoryAndQuery(target.id);
+    this.setState({ arrProdutos: results });
+    console.log(results);
   }
 
   render() {
@@ -51,10 +58,11 @@ class Home extends React.Component {
           pesquisar={ this.pesquisar }
         />
         <section>
-          { categories.map(({ id, name }) => (
+          { categories.map((obj) => (
             <Category
-              key={ id }
-              category={ name }
+              key={ obj.id }
+              category={ obj }
+              searchFunction={ this.handleChange }
             />)) }
         </section>
       </div>

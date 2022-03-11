@@ -2,25 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class Category extends React.Component {
-  handleChange = ({ target }) => {
-    if (target.checked) {
-      target.checked = false;
-      console.log('coisa');
-    } else {
-      console.log('true');
-    }
-  }
-
   render() {
-    const { category } = this.props;
+    const { category: { name, id }, searchFunction } = this.props;
     return (
-      <label htmlFor="category">
-        { category }
+      <label htmlFor={ id }>
+        { name }
         <input
           type="radio"
-          id="category"
+          id={ id }
           data-testid="category"
-          onChange={ this.handleChange }
+          onChange={ searchFunction }
+          name="category"
         />
       </label>
     );
@@ -28,7 +20,8 @@ class Category extends React.Component {
 }
 
 Category.propTypes = {
-  category: PropTypes.string.isRequired,
-};
+  category: PropTypes.shape({ name: PropTypes.string, id: PropTypes.string }),
+  radioChecked: PropTypes.bool,
+}.isRequired;
 
 export default Category;
