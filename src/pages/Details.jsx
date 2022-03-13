@@ -1,33 +1,51 @@
 import React from 'react';
-/* import propTypes from 'prop-types'; */
-import { useLocation } from 'react-router-dom';
+import propTypes from 'prop-types';
+import { addToCart } from '../services/addToCart';
 
-function Details() {
-  const location = useLocation();
-  const { title, price, thumbnail } = location.state;
-  return (
-    <div>
-      <div data-testid="product-detail-name">
-        { title }
-        { price }
-        <img src={ thumbnail } alt={ title } />
-      </div>
-    </div>
-  );
-}
+class Details extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: '',
+      price: '',
+      thumbnail: '',
+    };
+    this.addToCartFunc = this.addToCartFunc.bind(this);
+    this.getInfo = this.getInfo.bind(this);
+  }
 
-export default Details;
+  componentDidMount() {
+    this.getInfo();
+  }
 
-/* class Details extends React.Component {
+  async getInfo() {
+    const { match: { params: { id } } } = this.props;
+    const response = await fetch(`https://api.mercadolibre.com/items/${id}`);
+    const item = await response.json();
+    this.setState({ title: item.title, price: item.price, thumbnail: item.thumbnail });
+  }
+
+  async addToCartFunc() {
+    const { match: { params: { id } } } = this.props;
+    addToCart(id);
+  }
+
   render() {
-    const { title, price, thumbnail } = this.props;
+    const { title, price, thumbnail } = this.state;
     return (
       <div>
         <div data-testid="product-detail-name">
-          { title }
-          { price }
+          <h1>{ title }</h1>
+          <p>{ price }</p>
           <img src={ thumbnail } alt={ title } />
         </div>
+        <button
+          type="button"
+          data-testid="product-detail-add-to-cart"
+          onClick={ this.addToCartFunc }
+        >
+          Adicionar ao carrinho
+        </button>
       </div>
     );
   }
@@ -42,4 +60,4 @@ Details.propTypes = {
   }),
 }.isrequired;
 
-export default Details; */
+export default Details;

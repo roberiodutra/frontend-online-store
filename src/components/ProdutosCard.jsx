@@ -22,6 +22,7 @@ class ProdutosCard extends Component {
           to={ {
             pathname: xablau,
             state: {
+              item,
               title,
               price,
               thumbnail,
