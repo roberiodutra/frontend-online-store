@@ -9,7 +9,7 @@ class Details extends React.Component {
       title: '',
       price: '',
       thumbnail: '',
-    }
+    };
     this.addToCartFunc = this.addToCartFunc.bind(this);
     this.getInfo = this.getInfo.bind(this);
   }
