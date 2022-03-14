@@ -7,6 +7,7 @@ class Carrinho extends Component {
     this.state = {
       cartObjs: [],
       quantityWithId: [],
+      counter: 1,
     };
   }
 
@@ -32,15 +33,16 @@ class Carrinho extends Component {
     const { quantityWithId } = this.state;
     const newArr1 = quantityWithId.filter((prod) => event.target.name === prod.id);
     const newArr2 = quantityWithId.filter((prod) => event.target.name !== prod.id);
+    console.log(event.target.name);
     let diference = 0;
-    console.log(event.target);
     if (event.target.id === 'increase') {
       diference += newArr1[0].quantity;
       diference += 1;
       this.setState({
         quantityWithId: [...newArr2, { id: event.target.name, quantity: diference }] });
     } else {
-      diference = newArr1[0].quantity - 1;
+      diference += newArr1[0].quantity;
+      diference -= 1;
       this.setState({
         quantityWithId: [...newArr2, { id: event.target.name, quantity: diference }] });
     }
@@ -49,13 +51,15 @@ class Carrinho extends Component {
   renderCount = (itemId) => {
     const { quantityWithId } = this.state;
     const counter = quantityWithId.find((prod) => prod.id === itemId);
-    const { quantity } = counter;
-    console.log(quantity);
-    return 'teste';
+    if (counter !== undefined) {
+      console.log(counter.quantity);
+      return counter.quantity;
+    }
   }
 
   render() {
     const { cartObjs, quantityWithId } = this.state;
+    console.log(cartObjs);
     const { modifyQuantity, renderCount } = this;
     return (
       <div>
@@ -87,6 +91,7 @@ class Carrinho extends Component {
               <button
                 data-testid="product-increase-quantity"
                 id="decrease"
+                name={ item.id }
                 onClick={ modifyQuantity }
                 type="submit"
               >
