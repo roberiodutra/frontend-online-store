@@ -22,7 +22,7 @@ class FormReview extends Component {
     event.preventDefault();
     const { id } = this.props;
     const { email, rate, comment } = this.state;
-    const newRating = { id, rateStorage: { email, rate, comment, }};
+    const newRating = { id, rateStorage: { email, rate, comment } };
     let ratings = JSON.parse(localStorage.getItem('evaluations') || '[]');
 
     ratings = [...ratings, newRating];
@@ -48,8 +48,8 @@ class FormReview extends Component {
             />
           </label>
           <label htmlFor="rate">
-            { [1, 2, 3, 4, 5].map((number) =>
-              <input
+            { ['1', '2', '3', '4', '5']
+              .map((number) => (<input
                 key={ number }
                 data-testid={ `${number}-rating` }
                 name="rate"
@@ -57,8 +57,7 @@ class FormReview extends Component {
                 value={ number }
                 checked={ rate >= number }
                 onChange={ this.handleChange }
-              />
-            )}
+              />))}
           </label>
           <label htmlFor="comment">
             Avalie o produto:
@@ -79,11 +78,11 @@ class FormReview extends Component {
             data-testid="submit-review-btn"
             onClick={ this.saveRating }
           >
-          Avaliar
+            Avaliar
           </button>
         </form>
         <div>
-          { <Evaluations id={ id } /> }
+          <Evaluations id={ id } />
         </div>
       </div>
     );
