@@ -1,48 +1,43 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-/* import Details from '../pages/Details'; */
-/* import Details from '../pages/Details'; */
+import { addToCart } from '../services/addToCart';
 
 class ProdutosCard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showDetails: false,
-    };
-  }
-
-  details = () => {
-    this.setState({ showDetails: true });
+  addToCartFunc = () => {
+    const { item } = this.props;
+    addToCart(item);
   }
 
   render() {
-    const { item, /* details */ produto } = this.props;
+    const { item, produto } = this.props;
     const xablau = `/details/${item}`;
-    const { showDetails } = this.state;
     const { title, price, thumbnail } = produto;
     return (
       <div data-testid="product">
-        {/* <Link
-          to="/details"
-          data-testid="product-detail-link"
-          onClick={ this.details }
-        >
-          { item }
-        </Link> */}
+        <p>{ produto.title }</p>
+        <img src={ produto.thumbnail } alt="" />
         <Link
           data-testid="product-detail-link"
           to={ {
             pathname: xablau,
             state: {
+              item,
               title,
               price,
               thumbnail,
             },
           } }
         >
-          { item }
+          Detalhes
         </Link>
+        <button
+          type="button"
+          data-testid="product-add-to-cart"
+          onClick={ this.addToCartFunc }
+        >
+          Adicionar ao carrinho
+        </button>
       </div>
     );
   }
