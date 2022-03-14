@@ -10,12 +10,24 @@ class FormReview extends Component {
       email: '',
       rate: 0,
       comment: '',
+      evaluations: [],
     };
+  }
+
+  componentDidMount = () => {
+    this.getRatings();
   }
 
   handleChange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value });
+  }
+
+  getRatings = () => {
+    const { id } = this.props;
+    const ratings = JSON.parse(localStorage.getItem('evaluations') || '[]');
+    const isRate = ratings.filter((storage) => storage.id === id);
+    this.setState({ evaluations: isRate });
   }
 
   saveRating = (event) => {
@@ -24,14 +36,12 @@ class FormReview extends Component {
     const { email, rate, comment } = this.state;
     const newRating = { id, rateStorage: { email, rate, comment } };
     let ratings = JSON.parse(localStorage.getItem('evaluations') || '[]');
-
     ratings = [...ratings, newRating];
     localStorage.setItem('evaluations', JSON.stringify(ratings));
   }
 
   render() {
-    const { email, rate, comment } = this.state;
-    const { id } = this.props;
+    const { email, rate, comment, evaluations } = this.state;
     return (
       <div>
         <form>
@@ -81,9 +91,15 @@ class FormReview extends Component {
             Avaliar
           </button>
         </form>
-        <div>
-          <Evaluations id={ id } />
-        </div>
+        { evaluations
+          && (
+            <div>
+              <p>{email}</p>
+              <p>{rate}</p>
+            </div>
+          )}
+        <Evaluations evaluations={ evaluations } />
+
       </div>
     );
   }
