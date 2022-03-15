@@ -20,6 +20,7 @@ class Carrinho extends Component {
 
   render() {
     const { cartObjs } = this.state;
+    console.log(cartObjs);
     return (
       <div>
         <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>

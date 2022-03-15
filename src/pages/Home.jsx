@@ -36,7 +36,8 @@ class Home extends React.Component {
   }
 
   handleChange = async ({ target }) => {
-    const { results } = await api.getProductsFromCategoryAndQuery(target.id);
+    const response = await fetch(`https://api.mercadolibre.com/sites/MLB/search?category=${target.id}`);
+    const { results } = await response.json();
     this.setState({ arrProdutos: results });
   }
 
