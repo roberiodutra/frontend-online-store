@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { addToCart } from '../services/addToCart';
+import addToCart from '../services/addToCart';
 
 class ProdutosCard extends Component {
-  addToCartFunc = () => {
-    const { item } = this.props;
-    addToCart(item);
+  addToCartFunc = async () => {
+    const { produto } = this.props;
+    addToCart(produto);
   }
 
   render() {
     const { item, produto } = this.props;
     const xablau = `/details/${item}`;
-    const { title, price, thumbnail } = produto;
+    const { title, price, thumbnail, id } = produto;
     return (
       <div data-testid="product">
         <p>{ produto.title }</p>
@@ -33,6 +33,7 @@ class ProdutosCard extends Component {
         </Link>
         <button
           type="button"
+          id={ id }
           data-testid="product-add-to-cart"
           onClick={ this.addToCartFunc }
         >
