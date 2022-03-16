@@ -10,6 +10,7 @@ class Home extends React.Component {
       categories: [],
       searchValue: '',
       arrProdutos: [],
+      selectedCat: '',
     };
   }
 
@@ -21,30 +22,29 @@ class Home extends React.Component {
     this.setState({ [name]: value });
   }
 
-  pesquisar = async () => {
-    const { searchValue, categories } = this.state;
-    const arrProdutos = await api.getProductsFromCategoryAndQuery(
-      categories, searchValue,
-    );
-    this.setState({ arrProdutos: arrProdutos.results });
-    console.log(arrProdutos);
-  }
-
   categories = async () => {
-    await api.getCategories()
-      .then((cat) => this.setState({ categories: cat }));
+    this.setState({ categories: await api.getCategories() });
   }
 
-  handleChange = async ({ target }) => {
-    const { results } = await api.getProductsFromCategoryAndQuery(target.id);
+  handleClick = async () => {
+    const { selectedCat } = this.state;
+    const response = await fetch(`https://api.mercadolibre.com/sites/MLB/search?category=${selectedCat}`);
+    const { results } = await response.json();
     this.setState({ arrProdutos: results });
+  }
+
+  handleChange = ({ target: { value } }) => {
+    this.setState({
+      selectedCat: value,
+    }, () => { this.handleClick(); });
   }
 
   render() {
     const {
       categories,
       searchValue,
-      arrProdutos } = this.state;
+      arrProdutos,
+      selectedCat } = this.state;
     return (
       <div>
         <p data-testid="home-initial-message">
@@ -54,13 +54,15 @@ class Home extends React.Component {
           searchValue={ searchValue }
           arrProdutos={ arrProdutos }
           pegaValorDaPesquisa={ this.pegaValorDaPesquisa }
-          pesquisar={ this.pesquisar }
+          pesquisar={ this.handleClick }
         />
         <section>
           { categories.map((obj) => (
             <Category
               key={ obj.id }
-              category={ obj }
+              id={ obj.id }
+              name={ obj.name }
+              selectedCat={ selectedCat }
               searchFunction={ this.handleChange }
             />)) }
         </section>

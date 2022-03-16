@@ -1,106 +1,39 @@
-import React, { Component } from 'react';
-import { getsSavedItems } from '../services/addToCart';
+import React from 'react';
+import CartItems from '../components/CartItems';
 
-class Carrinho extends Component {
-  constructor() {
-    super();
+class Carrinho extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      cartObjs: [],
-      quantityWithId: [],
-      counter: 1,
+      products: [],
     };
   }
 
   componentDidMount() {
-    this.cartItems();
+    this.prodList();
   }
 
-  cartItems = async () => {
-    const itemsId = await getsSavedItems();
-    this.setState({ cartObjs: itemsId },
-      () => this.startCounting(itemsId));
-  }
-
-  startCounting = (itemsId) => {
-    itemsId.forEach((ids) => {
-      this.setState((previousState) => (
-        { quantityWithId: [...previousState.quantityWithId, { id: ids.id, quantity: 1 }] }
-      ));
+  prodList = async () => {
+    const products = JSON.parse(localStorage.getItem('cartItems')) || [];
+    products.forEach((item) => {
+      this.setState((prevState) => ({
+        products: [...prevState.products, item],
+      }));
     });
   }
 
-  modifyQuantity = (event) => {
-    const { quantityWithId } = this.state;
-    const newArr1 = quantityWithId.filter((prod) => event.target.name === prod.id);
-    const newArr2 = quantityWithId.filter((prod) => event.target.name !== prod.id);
-    console.log(event.target.name);
-    let diference = 0;
-    if (event.target.id === 'increase') {
-      diference += newArr1[0].quantity;
-      diference += 1;
-      this.setState({
-        quantityWithId: [...newArr2, { id: event.target.name, quantity: diference }] });
-    } else {
-      diference += newArr1[0].quantity;
-      diference -= 1;
-      this.setState({
-        quantityWithId: [...newArr2, { id: event.target.name, quantity: diference }] });
-    }
-  }
-
-  renderCount = (itemId) => {
-    const { quantityWithId } = this.state;
-    const counter = quantityWithId.find((prod) => prod.id === itemId);
-    if (counter !== undefined) {
-      console.log(counter.quantity);
-      return counter.quantity;
-    }
-  }
-
   render() {
-    const { cartObjs, quantityWithId } = this.state;
-    console.log(cartObjs);
-    const { modifyQuantity, renderCount } = this;
+    const { products } = this.state;
     return (
-      <div>
-        <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
-        {(cartObjs)
-          && cartObjs.map((item) => (
-            <div
-              key={ item.id }
-            >
-              <p
-                data-testid="shopping-cart-product-name"
-              >
-                {item.title}
-              </p>
-              <p
-                data-testid="shopping-cart-product-quantity"
-              >
-                { renderCount(item.id) }
-              </p>
-              <button
-                data-testid="product-increase-quantity"
-                id="increase"
-                name={ item.id }
-                onClick={ modifyQuantity }
-                type="submit"
-              >
-                +
-              </button>
-              <button
-                data-testid="product-increase-quantity"
-                id="decrease"
-                name={ item.id }
-                onClick={ modifyQuantity }
-                type="submit"
-              >
-                -
-              </button>
-            </div>
-          ))}
-      </div>
-    );
+      (products.length === 0)
+        ? <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
+        : (
+          <div>
+            { products.map((product, i) => (
+              <CartItems key={ i } product={ product } />
+            ))}
+          </div>
+        ));
   }
 }
 
