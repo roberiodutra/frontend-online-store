@@ -1,6 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import addToCart from '../services/addToCart';
+import FormReview from '../components/FormReview';
 
 class Details extends React.Component {
   constructor(props) {
@@ -53,6 +54,7 @@ class Details extends React.Component {
         >
           Adicionar ao carrinho
         </button>
+        <FormReview id={ id } />
       </div>
     );
   }
